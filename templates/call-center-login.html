@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>NARA CRM | Login</title>
+        <link
+          rel="icon"
+          href="{{ url_for('static', filename='img/icon.png') }}"
+          type="image/png"
+        />
+        <link
+          href="https://fonts.googleapis.com/css?family=Ubuntu"
+          rel="stylesheet"
+        />
+        <link
+          rel="stylesheet"
+          href="{{ url_for('static', filename='css/bootstrap.min.css') }}"
+        />
+        <style>
+          label{
+            color: #F0434F;
+          }
+          body{
+            font-family: 'Ubuntu', sans-serif;
+            font-size: 1.225em;
+            background-color: white;
+          }
+          .loginbutton{
+            background-color: #F0434F;
+            color: rgb(255, 255, 255);
+          }
+        </style>
+      </head>
+<body>
+    <div class="container">
+      <div class="row">
+        <div class="text-center">
+          <img
+            src="{{ url_for('static', filename='img/logo.png') }}"
+            alt="logo"
+            class="img-fluid d-inline-block shadow p-3 mb-5 bg-white rounded"
+          />
+        </div>
+      </div>
+      <p class="text-center" style="color: rgb(86, 93, 100); font-size: 1.4em">Sign in to your Account (Call Center)</p>
+        <div class="row justify-content-center">
+          <div class="col-md-4">
+            <form id="loginform" onsubmit="postLoginData(event)">
+                <div class="form-outline mb-2">
+                  <label class="form-label" for="form2Example1">Email address</label>
+                  <input type="email" id="email" class="form-control" />
+                </div>
+              
+                <div class="form-outline mb-2">
+                  <label class="form-label" for="form2Example2">Password</label>
+                  <input type="password" id="passwd" class="form-control" />
+                </div>
+
+                <button type="submit" class="loginbutton btn btn-block mb-2">Sign in</button>
+              </form>
+          </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{{ url_for('static', filename='js/jquery-3.7.1.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+
+
+<script>
+  function postLoginData(event){
+      event.preventDefault();
+      loginData = {
+        email: $('#email').val().trim(),
+        passwd: $('#passwd').val().trim()
+      };
+      fetch('/callcenter-login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          //"X-CSRFToken": getCSRFToken()
+        },
+        body: JSON.stringify(loginData)
+      }).then(response => response.json()).then(data => {
+        if(data.status === 'yes')
+          window.location.href = '/';
+        else
+          Swal.fire({title: 'Error!', text: 'wrong creds', icon: 'error', confirmButtonText: 'OK'});
+      }).catch(error => {
+        console.error('Error:', error);
+      });
+    }//end
+</script>
+
+</body>
+</html>

@@ -2,13 +2,13 @@ import pymysql
 
 class Database:
     def connect(self):
-        return pymysql.connect(charset="utf8mb4", db="defaultdb", host="nara-real-estate-mohamedzahi33-d182.a.aivencloud.com", password="AVNS_-rsuSdYWn_5K62hZiKS", port=19329, user="avnadmin")
+        return pymysql.connect(charset="utf8mb4", db="defaultdb", host="nara-database-mohamedzahi33-d182.e.aivencloud.com", password="AVNS_BRGZnzPJqXbYgA53kTt", port=19329, user="avnadmin")
 
     def get_callcenter_id(self, email, passwd):
         con = Database.connect(self)
         cursor = con.cursor()
         try:
-            cursor.execute('select id from callcenterusers where email = %s AND password = %s', (email, passwd))
+            cursor.execute('select id_ from call_center_users where email_ = %s AND password_ = %s', (email, passwd))
             return cursor.fetchone()[0]
         except Exception as e:
             return None
@@ -20,7 +20,7 @@ class Database:
         con = Database.connect(self)
         cursor = con.cursor()
         try:
-            cursor.execute('select email from callcenterusers where id = %s', (callcenter_id))
+            cursor.execute('select email_ from call_center_users where id_ = %s', (callcenter_id))
             return cursor.fetchone()[0]
         except Exception as e:
             return None
