@@ -16,6 +16,18 @@ class Database:
             con.close()
 
 
+    def get_agent_id(self, email, passwd):
+        con = Database.connect(self)
+        cursor = con.cursor()
+        try:
+            cursor.execute('select id_ from agents where email_ = %s AND password_ = %s', (email, passwd))
+            return cursor.fetchone()[0]
+        except Exception as e:
+            return None
+        finally:
+            con.close()
+
+
     def get_callcenter_email(self, callcenter_id):
         con = Database.connect(self)
         cursor = con.cursor()

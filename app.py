@@ -26,22 +26,23 @@ def redirect_https():
 
 
 
-@app.route('/callcenter-login', methods=['POST', 'GET'])
+@app.route('/call-center-login', methods=['POST', 'GET'])
 def callcenter_login():
     if request.method == 'POST':
         data = request.get_json()
         email = data.get('email')
         passwd = data.get('passwd')
 
-        callcenterid = db.get_callcenter_id(email, passwd)
-        print(callcenterid)
-        if callcenterid != None:
-            session['callcenterid'] = callcenterid
+        call_center_id = db.get_callcenter_id(email, passwd)
+        
+        if call_center_id != None:
+            session['call_center_id'] = call_center_id
             return jsonify({'status': 'yes'})
         else:
             return jsonify({'status': 'no'})
     else:#get
         return render_template('call-center-login.html')
+
 
 
 @app.route('/agent-login', methods=['POST', 'GET'])
@@ -58,13 +59,10 @@ def agent_login():
             return jsonify({'status': 'yes'})
         else:
             return jsonify({'status': 'no'})
-    else:  
+    else: # GET
         return render_template('agent-login.html')
 
 
-@app.route('/login')
-def login():
-    render_template('')
 
 @app.route('/logout', methods=['GET'])
 def logout():
@@ -75,19 +73,24 @@ def logout():
 
 @app.route('/', methods=['GET'])
 def index():
-    if 'callcenterid' in session or 'agent_id':
-        return redirect(url_for('home'))
+    if 'call_center_id' in session:
+        return render_template('call-center-home.html')
+
+    elif 'agent_id' in session:
+        return render_template('agent-home.html')
+
     else:
-        return redirect(url_for('login'))#not yet
+        return render_template('index.html')
+
 
 
 @app.route('/call-center-home', methods=['GET', 'POST'])
 def home():
     if request.method == 'GET':
-        if 'callcenterid' in session:
+        if 'call_center_id' in session:
             return render_template('home.html')
     else:#post
-        if 'callcenterid' in session:
+        if 'call_center_id' in session:
             return redirect(url_for('home'))
         else:
             return redirect(url_for('login'))
