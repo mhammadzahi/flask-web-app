@@ -2,7 +2,7 @@ import pymysql
 
 class Database:
     def connect(self):
-        return pymysql.connect(charset="utf8mb4", db="defaultdb", host="nara-database-mohamedzahi33-d182.e.aivencloud.com", password="AVNS_BRGZnzPJqXbYgA53kTt", port=19329, user="avnadmin")
+        return pymysql.connect(charset="utf8mb4", db="", host="", password="", port=123, user="")
 
     def get_callcenter_id(self, email, passwd):
         con = Database.connect(self)
